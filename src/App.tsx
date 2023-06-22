@@ -1,11 +1,42 @@
-import { useState } from 'react';
+import type { Router as RemixRouter } from '@remix-run/router';
+import { useEffect } from 'react';
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom';
 
-import LoginScreen from './modules/login';
+import { loginRoutes } from './modules/login/routes';
+import { productScreens } from './modules/product/routes';
+import { URL_USER } from './shared/constants/urls';
+import { MethodsEnum } from './shared/enums/methods.enum';
+import { getAuthorizationToken, verifyLoggedIn } from './shared/functions/connection/auth';
+import { useNotification } from './shared/hooks/useNotification';
+import { useRequests } from './shared/hooks/useRequests';
+import { useGlobalReducer } from './store/reducers/globalReducer/useGlobalReducer';
+
+const routes: RouteObject[] = [...loginRoutes];
+const routesLoggedIn: RouteObject[] = [...productScreens].map((route) => ({
+  ...route,
+  loader: verifyLoggedIn,
+}));
+
+const router: RemixRouter = createBrowserRouter([...routes, ...routesLoggedIn]);
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { contextHolder } = useNotification();
+  const { setUser } = useGlobalReducer();
+  const { request } = useRequests();
 
-  return <LoginScreen />;
+  useEffect(() => {
+    const token = getAuthorizationToken();
+    if (token) {
+      request(URL_USER, MethodsEnum.GET, setUser);
+    }
+  }, []);
+
+  return (
+    <>
+      {contextHolder}
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
