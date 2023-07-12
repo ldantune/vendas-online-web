@@ -1,10 +1,9 @@
 import { Divider } from 'antd';
 
 import Breadcrumb, { ListBreadcrumb } from '../breadcrumb/Breadcrumb';
-
-import { ScreenContainer } from './screen.style';
-import Menu from '../menu/Menu';
 import Header from '../header/Header';
+import Menu from '../menu/Menu';
+import { ScreenContainer } from './screen.style';
 
 interface ScreenProps {
   children: React.ReactNode;
