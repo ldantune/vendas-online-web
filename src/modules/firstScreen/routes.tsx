@@ -1,4 +1,6 @@
 import { RouteObject } from 'react-router-dom';
+import PageNotFound from './screens/PageNotFound';
+import FirstScreen from './screens/FirstScreen';
 
 export enum FirstScreenRoutesEnum {
   FIRST_SCREEN = '/',
@@ -7,7 +9,7 @@ export enum FirstScreenRoutesEnum {
 export const firstScreenRoutes: RouteObject[] = [
   {
     path: FirstScreenRoutesEnum.FIRST_SCREEN,
-    element: <div></div>,
-    errorElement: <div></div>,
+    element: <FirstScreen />,
+    errorElement: <PageNotFound/>,
   },
 ];
