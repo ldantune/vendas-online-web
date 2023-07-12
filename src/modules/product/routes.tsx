@@ -14,4 +14,3 @@ export const productScreens: RouteObject[] = [
     element: <Product />,
   },
 ];
-
